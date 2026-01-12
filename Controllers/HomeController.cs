@@ -1,59 +1,73 @@
 using Microsoft.AspNetCore.Mvc;
+using Project.Data;
+using Project.Models;
+using System.Linq;
 
-namespace TenderCare.Controllers
+namespace Project.Controllers
 {
     public class HomeController : Controller
     {
-        // Home Page
-        public IActionResult Index()
-        {
-            return View();
-        }
+        private readonly TenderCareDbContext _context;
 
-        // Services Page
-        public IActionResult Services()
-        {
-            return View();
-        }
+        public HomeController(TenderCareDbContext context) => _context = context;
 
-        // About Us Page
-        public IActionResult AboutUs()
-        {
-            return View();
-        }
+        public IActionResult Index() => View();
+        public IActionResult Services() => View();
 
-        // Handle Appointment Form Submission
         [HttpPost]
         public IActionResult MakeAppointment(AppointmentModel model)
         {
             if (ModelState.IsValid)
             {
-                // TODO: Save appointment to database
-                // Example: _context.Appointments.Add(model);
-                // _context.SaveChanges();
+                // Check if patient exists
+                var patient = _context.Patients.FirstOrDefault(p => p.Email == model.Email)
+                            ?? _context.Patients.FirstOrDefault(p => p.PatientName == model.PatientName);
 
-                // Redirect to success page or show success message
-                TempData["Success"] = "Appointment created successfully!";
+                if (patient == null)
+                {
+                    patient = new Patient
+                    {
+                        PatientID = "P" + DateTime.Now.Ticks.ToString().Substring(10),
+                        PatientName = model.PatientName,
+                        GuardianName = model.GuardianName,
+                        Email = model.Email,
+                        Gender = model.Gender,
+                        Address = model.Address,
+                        DateOfBirth = model.DateOfBirth,
+                        ContactNumber = model.ContactNumber
+                    };
+                    _context.Patients.Add(patient);
+                    _context.SaveChanges(); // Must save patient first
+                }
+
+                var appointment = new Appointment
+                {
+                    AppointmentID = "A" + DateTime.Now.Ticks.ToString().Substring(10),
+                    PatientID = patient.PatientID,
+                    ServiceType = model.Service,
+                    AppointmentDate = model.AppointmentDate
+                };
+
+                _context.Appointments.Add(appointment);
+                _context.SaveChanges();
+
+                TempData["Success"] = "Appointment Saved Successfully!";
                 return RedirectToAction("Services");
             }
-
             return View("Services", model);
-        }
-
-        // Error Page
-        public IActionResult Error()
-        {
-            return View();
         }
     }
 
-    // Appointment Model
     public class AppointmentModel
     {
-        public string PatientName { get; set; }
-        public string GuardianName { get; set; }
-        public string Service { get; set; }
-        public string Email { get; set; }
+        public string PatientName { get; set; } = string.Empty;
+        public string GuardianName { get; set; } = string.Empty;
+        public string Service { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
         public DateTime AppointmentDate { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+        public string? Gender { get; set; }
+        public string? ContactNumber { get; set; }
+        public string? Address { get; set; }
     }
 }

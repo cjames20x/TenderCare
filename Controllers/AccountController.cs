@@ -1,23 +1,49 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Project.Data;
+using Project.Models;
+using System.Linq;
 
-namespace YourProjectName.Controllers
+namespace Project.Controllers
 {
     public class AccountController : Controller
     {
-        public IActionResult Login()
+        private readonly TenderCareDbContext _context;
+
+        public AccountController(TenderCareDbContext context)
         {
+            _context = context;
+        }
+
+        public IActionResult Login() => View();
+
+        [HttpPost]
+        public IActionResult Login(string email, string password)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
+            if (user != null)
+            {
+                // Successful Login redirects to Services page
+                return RedirectToAction("Services", "Home");
+            }
+            ViewBag.Error = "Invalid Login credentials.";
             return View();
         }
 
         [HttpPost]
-        public IActionResult Login(string email, string password, bool rememberMe)
+        public IActionResult Signup(User user, string confirmPassword)
         {
-            return View();
-        }
+            if (user.Password != confirmPassword)
+            {
+                ViewBag.Error = "Passwords do not match.";
+                return View("Login");
+            }
 
-        [HttpPost]
-        public IActionResult Signup(string firstName, string lastName, string email, string phone, string password, string confirmPassword)
-        {
+            if (ModelState.IsValid)
+            {
+                _context.Users.Add(user);
+                _context.SaveChanges();
+                return RedirectToAction("Login");
+            }
             return View("Login");
         }
     }

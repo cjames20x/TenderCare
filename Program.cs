@@ -1,23 +1,26 @@
-var builder = WebApplication.CreateBuilder(args);
+using Microsoft.EntityFrameworkCore;
+using Project.Data;
+using MySqlConnector;
 
-// Add services to the container.
+var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+// Database Connection String
+var csb = new MySqlConnectionStringBuilder
 {
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
+    Server = "localhost",
+    Port = 3306,
+    Database = "TenderCareDb",
+    UserID = "root",
+    Password = "PRESHEUN03"
+};
 
-app.UseHttpsRedirection();
+builder.Services.AddDbContext<TenderCareDbContext>(options =>
+    options.UseMySql(csb.ConnectionString, ServerVersion.AutoDetect(csb.ConnectionString)));
+
+var app = builder.Build();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthorization();
 
 app.MapControllerRoute(
