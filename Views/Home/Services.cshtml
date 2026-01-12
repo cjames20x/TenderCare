@@ -37,7 +37,7 @@
     <div class="service-container">
         <div class="service-text">
             <h2>IMMUNIZATIONS</h2>
-            <p><strong>TenderCare</strong> offers comprehensive immunization services to protect children from preventable diseases. This service includes administering required and recommended vaccines according to national pediatric immunization schedules, maintaining accurate immunization records, and ensuring proper follow-up for booster doses. By keeping immunizations complete and up to date, TenderCare supports children’s long-term health, safety, and well-being.</p>
+            <p><strong>TenderCare</strong> offers comprehensive immunization services to protect children from preventable diseases. This service includes administering required and recommended vaccines according to national pediatric immunization schedules, maintaining accurate immunization records, and ensuring proper follow-up for booster doses. By keeping immunizations complete and up to date, TenderCare supports children's long-term health, safety, and well-being.</p>
         </div>
         <div class="service-image">
             <img src="~/images/immunization.jpg" alt="Immunization">
@@ -56,18 +56,27 @@
             </div>
 
             <div class="form-group">
+                <label for="dateOfBirth">Date of Birth</label>
+                <input type="date" id="dateOfBirth" name="DateOfBirth" required>
+            </div>
+
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select id="gender" name="Gender" required>
+                    <option value="">Select gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label for="guardianName">Guardian's Name</label>
                 <input type="text" id="guardianName" name="GuardianName" placeholder="Enter the guardian's name" required>
             </div>
 
             <div class="form-group">
-                <label for="service">Service</label>
-                <select id="service" name="Service" required>
-                    <option value="">Select a service</option>
-                    <option value="Checkup">Checkup</option>
-                    <option value="Vaccination">Vaccination</option>
-                    <option value="Consultation">Immunization</option>
-                </select>
+                <label for="contactNumber">Contact Number</label>
+                <input type="tel" id="contactNumber" name="ContactNumber" placeholder="Enter contact number" required>
             </div>
 
             <div class="form-group">
@@ -76,8 +85,23 @@
             </div>
 
             <div class="form-group">
-                <label for="date">Date</label>
-                <input type="date" id="date" name="AppointmentDate" placeholder="Select Date" required>
+                <label for="address">Address</label>
+                <textarea id="address" name="Address" placeholder="Enter your complete address" rows="3" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="service">Service</label>
+                <select id="service" name="Service" required>
+                    <option value="">Select a service</option>
+                    <option value="Checkup">Checkup</option>
+                    <option value="Vaccination">Vaccination</option>
+                    <option value="Immunization">Immunization</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="date">Date of Appointment</label>
+                <input type="date" id="date" name="AppointmentDate" required>
             </div>
 
             <button type="submit" class="btn-appointment">Make an Appointment</button>
