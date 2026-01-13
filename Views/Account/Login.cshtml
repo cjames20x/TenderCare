@@ -1,17 +1,24 @@
 ﻿@{
     Layout = "_Layout";
+    ViewData["Title"] = "Login & Signup";
 }
 
 <section class="auth-section">
     <div class="auth-container">
         <div class="auth-card">
-            <!-- Tab Navigation -->
+
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert-error" style="color: white; background: #e74c3c; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center;">
+                    @ViewBag.Error
+                </div>
+            }
+
             <div class="auth-tabs">
                 <button class="tab-btn active" onclick="switchTab('login')">Login</button>
                 <button class="tab-btn" onclick="switchTab('signup')">Sign Up</button>
             </div>
 
-            <!-- Login Form -->
             <div id="login-form" class="auth-form active">
                 <h2>Welcome Back!</h2>
                 <p class="subtitle">Login to access your TenderCare account</p>
@@ -39,7 +46,6 @@
                 </form>
             </div>
 
-            <!-- Signup Form -->
             <div id="signup-form" class="auth-form">
                 <h2>Create Account</h2>
                 <p class="subtitle">Sign up to get started with TenderCare</p>
@@ -59,11 +65,6 @@
                     <div class="form-group">
                         <label for="signup-email">Email Address</label>
                         <input type="email" id="signup-email" name="email" placeholder="Enter your email" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="signup-phone">Phone Number</label>
-                        <input type="tel" id="signup-phone" name="phone" placeholder="Enter your phone number" required>
                     </div>
 
                     <div class="form-group">
@@ -95,7 +96,9 @@
         function switchTab(tab) {
             const tabs = document.querySelectorAll('.tab-btn');
             tabs.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+
+            // Add active class to the clicked button
+            event.currentTarget.classList.add('active');
 
             const forms = document.querySelectorAll('.auth-form');
             forms.forEach(form => form.classList.remove('active'));

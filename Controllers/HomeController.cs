@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Project.Data;
 using Project.Models;
+using System;
 using System.Linq;
 
 namespace Project.Controllers
@@ -12,7 +13,11 @@ namespace Project.Controllers
         public HomeController(TenderCareDbContext context) => _context = context;
 
         public IActionResult Index() => View();
+
         public IActionResult Services() => View();
+
+        // ADDED THIS: This connects your AboutUs.cshtml file
+        public IActionResult AboutUs() => View();
 
         [HttpPost]
         public IActionResult MakeAppointment(AppointmentModel model)

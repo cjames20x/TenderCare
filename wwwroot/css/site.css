@@ -919,4 +919,11 @@ footer {
         gap: 20px;
         text-align: center;
     }
+
+    .table-responsive {
+        background-color: white !important;
+        border-radius: 15px;
+        padding: 20px;
+        margin-top: 20px;
+    }
 }

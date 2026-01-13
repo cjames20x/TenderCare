@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Project.Models.MedicalRecord>
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Medical Records";
+}
+
+<div class="admin-container" style="padding: 40px; min-height: 80vh;">
+    <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px;">
+        <div>
+            <h2 style="font-weight: 800; color: #1a2a3a; margin: 0;">
+                <i class="fas fa-file-medical"></i> Medical Records
+            </h2>
+            <p style="font-size: 1.1rem; color: #7f8c8d; margin-top: 5px;">
+                Total Records: <strong>@Model.Count()</strong>
+            </p>
+        </div>
+
+        <div class="search-section">
+            <form asp-action="MedicalRecords" method="get" style="display: flex; gap: 10px;">
+                <div style="position: relative;">
+                    <i class="fas fa-search" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #bdc3c7;"></i>
+                    <input type="text" name="searchString" value="@ViewData["CurrentFilter"]"
+                           placeholder="Search ID or Patient..."
+                           style="padding: 12px 15px 12px 40px; border-radius: 12px; border: 1.5px solid #dee2e6; width: 320px; outline: none;">
+                </div>
+                <button type="submit" class="btn" style="border-radius: 12px; padding: 0 25px; font-weight: 700; background: #1a2a3a; color: white; border: none; cursor: pointer;">
+                    SEARCH
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="table-responsive shadow-sm" style="background: white; border-radius: 15px; padding: 20px; overflow-x: auto;">
+        <table class="table" style="width: 100%; border-collapse: collapse;">
+            <thead style="border-bottom: 2px solid #f0f4f8;">
+                <tr style="text-align: left; color: #34495e; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">
+                    <th style="padding: 15px;">Record ID</th>
+                    <th style="padding: 15px;">Patient</th>
+                    <th style="padding: 15px;">Service</th>
+                    <th style="padding: 15px;">Diagnosis</th>
+                    <th style="padding: 15px;">Notes</th>
+                    <th style="padding: 15px;">Doctor</th>
+                    <th style="padding: 15px;">Date</th>
+                    <th style="padding: 15px; text-align: center;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var record in Model)
+                {
+                    <tr style="border-bottom: 1px solid #f9f9f9; vertical-align: middle;">
+                        <td style="padding: 15px; font-weight: 700; color: #1a2a3a;">#@record.RecordID</td>
+                        <td style="padding: 15px;">
+                            <span style="display:block; font-weight: 600;">@record.Patient?.PatientName</span>
+                            <small style="color: #95a5a6;">ID: @record.PatientID</small>
+                        </td>
+                        <td style="padding: 15px;"><span style="background: #fff3cd; color: #856404; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 600;">@record.ServiceType</span></td>
+                        <td style="padding: 15px;">@record.Diagnosis</td>
+                        <td style="padding: 15px; color: #7f8c8d; font-style: italic; font-size: 0.9rem;">
+                            @record.Notes
+                        </td>
+                        <td style="padding: 15px; font-weight: 500;">Dr. @record.DoctorName</td>
+                        <td style="padding: 15px; color: #7f8c8d;">@record.DateRecorded.ToString("MMM dd, yyyy")</td>
+                        <td style="padding: 15px; text-align: center;">
+                            <div style="display: flex; gap: 8px; justify-content: center;">
+                                <a href="#" title="View Details" style="color: #1a2a3a;"><i class="fas fa-eye"></i></a>
+                                <a href="#" title="Edit Record" style="color: #ffc107;"><i class="fas fa-edit"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

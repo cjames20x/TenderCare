@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Project.Data;
 
@@ -10,9 +11,11 @@ using Project.Data;
 namespace Project.Migrations
 {
     [DbContext(typeof(TenderCareDbContext))]
-    partial class TenderCareDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260112175145_AddPrimaryKeyToMedicalRecord")]
+    partial class AddPrimaryKeyToMedicalRecord
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

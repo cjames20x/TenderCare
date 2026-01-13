@@ -1,0 +1,67 @@
+﻿/* wwwroot/css/admin.css */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.admin-wrapper {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f0f4f8;
+}
+
+.sidebar {
+    width: 280px;
+    background-color: #1a2a3a;
+    color: white;
+    padding: 20px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: #bdc3c7;
+    text-decoration: none;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+    .sidebar-link i {
+        width: 20px;
+        text-align: center;
+    }
+
+    .sidebar-link:hover, .sidebar-link.active {
+        background: #243b53;
+        color: white;
+        transform: translateX(5px);
+    }
+
+    .sidebar-link.active {
+        border-left: 4px solid #ffc107;
+        background: #243b53;
+    }
+
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.content-body {
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+}
