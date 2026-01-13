@@ -1,0 +1,97 @@
+﻿@model IEnumerable<Project.Models.Appointment>
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="admin-container" style="padding: 40px; min-height: 80vh; background-color: #f4f7f6;">
+    <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px;">
+        <div>
+            <h2 style="font-weight: 800; color: #2c3e50; margin: 0;">
+                <i class="fas fa-calendar-check"></i> Patient Appointments
+            </h2>
+            <p style="font-size: 1.1rem; color: #7f8c8d; margin-top: 5px;">
+                Total Appointments: <strong>@Model.Count()</strong>
+            </p>
+        </div>
+
+        <div class="search-section">
+            <form asp-action="Dashboard" method="get" style="display: flex; gap: 10px;">
+                <div style="position: relative;">
+                    <i class="fas fa-search" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #f4f7f6;"></i>
+                    <input type="text" name="searchString" value="@ViewData["CurrentFilter"]"
+                           placeholder="Search ID or Name..."
+                           style="padding: 12px 15px 12px 40px; border-radius: 12px; border: 1.5px solid #dee2e6; width: 320px; outline: none; transition: 0.3s;"
+                           onfocus="this.style.borderColor='#2c3e50'; this.style.boxShadow='0 0 0 3px rgba(44, 62, 80, 0.1)';"
+                           onblur="this.style.borderColor='#dee2e6';">
+                </div>
+                <button type="submit" class="btn btn-dark" style="border-radius: 12px; padding: 0 25px; font-weight: 700; background: #2c3e50; border: none; cursor: pointer;">
+                    SEARCH
+                </button>
+                @if (!string.IsNullOrEmpty(ViewData["CurrentFilter"]?.ToString()))
+                {
+                    <a asp-action="Dashboard" style="display: flex; align-items: center; justify-content: center; background: #eee; width: 45px; border-radius: 12px; color: #666; text-decoration: none;">
+                        <i class="fas fa-times"></i>
+                    </a>
+                }
+            </form>
+        </div>
+    </div>
+
+    <div class="table-responsive shadow-sm" style="background: white; border-radius: 15px; padding: 20px;">
+        <table class="table" style="width: 100%; border-collapse: collapse;">
+            <thead style="border-bottom: 2px solid #f4f4f4;">
+                <tr style="text-align: left; color: #34495e;">
+                    <th style="padding: 15px;">ID</th>
+                    <th style="padding: 15px;">Patient Name</th>
+                    <th style="padding: 15px;">Service</th>
+                    <th style="padding: 15px;">Date</th>
+                    <th style="padding: 15px;">Status</th>
+                    <th style="padding: 15px; text-align: center;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="6" style="padding: 60px; text-align: center; color: #95a5a6; font-size: 1.2rem;">
+                            <i class="fas fa-folder-open" style="display: block; font-size: 3rem; margin-bottom: 15px; opacity: 0.3;"></i>
+                            No appointments found matching your search.
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var item in Model)
+                    {
+                        <tr style="border-bottom: 1px solid #f9f9f9; vertical-align: middle;">
+                            <td style="padding: 15px; font-weight: 600; color: #2c3e50;">#@item.AppointmentID</td>
+                            <td style="padding: 15px;">@item.Patient?.PatientName</td>
+                            <td style="padding: 15px;">@item.ServiceType</td>
+                            <td style="padding: 15px;">@item.AppointmentDate?.ToString("MMM dd, yyyy")</td>
+                            <td style="padding: 15px;">
+                                <span style="background: #e1f5fe; color: #0288d1; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700;">
+                                    @item.Status
+                                </span>
+                            </td>
+                            <td style="padding: 15px; text-align: center;">     <div style="display: flex; gap: 10px; justify-content: center;">
+                                    <a asp-action="Update" asp-route-id="@item.AppointmentID"
+                                       style="background: #ffc107; color: #000; padding: 8px 15px; border-radius: 8px; text-decoration: none; font-size: 0.9rem; font-weight: 600;">
+                                        <i class="fas fa-edit"></i> Update
+                                    </a>
+
+                                    <form asp-action="Delete" asp-route-id="@item.AppointmentID" method="post" onsubmit="return confirm('Permanently delete this appointment?');">
+                                        <button type="submit" style="background: #ff5e62; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600;">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
